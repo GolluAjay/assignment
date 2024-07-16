@@ -19,6 +19,6 @@ connectDB().then(() => {
   process.exit(1);
 });
 
-// startCronJobs(); // Start the cron jobs
+startCronJobs(); // Start the cron jobs
 
 export default app;
