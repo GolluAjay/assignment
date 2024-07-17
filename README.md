@@ -65,4 +65,10 @@
 
 [Watch the demo video](videos/demo.mp4)
 
+
+<video width="600" controls>
+  <source src="videos/demo.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 That's it! Your project should now be up and running.
