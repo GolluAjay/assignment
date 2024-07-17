@@ -1,11 +1,15 @@
 "use client";
 import React, { useEffect, useState, useCallback } from "react";
 import moment from "moment";
+import { useDispatch, useSelector, UseSelector } from "react-redux";
 
 import Modal from "./Modal";
 import { formatNumber } from "../utils/formatNumber";
 import { fetchEntries } from "../api/fetchCrypto";
 import { Crypto, Entry } from "@/types";
+import { useAppSelector } from "../redux/store";
+import { updateModalState } from "../redux/Model/model-slice";
+import { addEntries } from "../redux/Crypto/cryto-slice";
 
 interface TableProps {
   initialEntries: Entry[];
@@ -14,19 +18,30 @@ interface TableProps {
   cryptos: Crypto[];
 }
 
+interface Data {
+  [code: string]: Entry[];
+}
+
 const Table: React.FC<TableProps> = ({
   initialEntries,
   code,
   color,
   cryptos,
 }) => {
-  const [entries, setEntries] = useState<Entry[]>(initialEntries);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const { isModalOpen }: { isModalOpen: boolean } = useAppSelector(
+    (state) => state.modal
+  );
+  const { data }: { data: Data } = useAppSelector((state) => state.cryto);
+
+  useEffect(() => {
+    dispatch(addEntries({ [code]: initialEntries }));
+  }, [initialEntries, dispatch, code]);
 
   const fetchData = useCallback(async () => {
     const data = await fetchEntries(code);
-    setEntries(data.slice(0, 20)); // Limit to 20 entries
-  }, [code]);
+    dispatch(addEntries({ [code]: data }));
+  }, [code, dispatch]);
 
   const selectedCrypto = cryptos.filter((crypto) => crypto.code === code)[0];
 
@@ -36,15 +51,15 @@ const Table: React.FC<TableProps> = ({
     return () => clearInterval(interval); // Clean up the interval on component unmount
   }, [fetchData]);
 
-  if (entries.length === 0) {
+  if (data[code]?.length === 0) {
     return <p className="text-gray-600">No data available</p>;
   }
 
   // Determine the color from the first entry or use a default color
-  const backgroundColor = entries[0]?.color || color || "#ffffff";
+  const backgroundColor = data[code]?.[0]?.color || color || "#ffffff";
 
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
+  const handleOpenModal = () => dispatch(updateModalState(true));
+  const handleCloseModal = () => dispatch(updateModalState(false));
 
   const renderHeader = () => {
     return (
@@ -79,7 +94,7 @@ const Table: React.FC<TableProps> = ({
           </tr>
         </thead>
         <tbody className="text-gray-600">
-          {entries.map((entry) => (
+          {data[code]?.map((entry) => (
             <tr key={entry._id} className="border-b hover:bg-gray-50">
               <td className="py-2 px-4">${entry.allTimeHighUSD.toFixed(2)}</td>
               <td className="py-2 px-4">${entry.rate.toFixed(2)}</td>

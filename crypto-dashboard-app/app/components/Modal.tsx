@@ -32,7 +32,7 @@ const Modal: React.FC<ModalProps> = ({
         <ul className="space-y-2">
           {cryptos.map((crypto) => (
             <li key={crypto.code} className="border-b last:border-b-0">
-              <Link key={crypto.code} href={`/dashboard/${crypto.code}`}>
+              <Link key={crypto.code} href={`/dashboard/${crypto.code}`} onClick={onClose}>
                 <button
                   type="button"
                   className="w-full text-left py-2 px-4 hover:bg-gray-100"

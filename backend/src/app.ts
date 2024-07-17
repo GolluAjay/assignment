@@ -21,6 +21,6 @@ connectDB().then(() => {
   console.error('MongoDB connection error:', error);
 });
 
-// startCronJobs(); // Start the cron jobs
+startCronJobs(); // Start the cron jobs
 
 export default app;
