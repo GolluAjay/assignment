@@ -6,7 +6,7 @@ interface Crypto extends Document {
   color: string;
   allTimeHighUSD: number;
   rate: number;
-  market: number;
+  markets: number;
   volume: number;
   cap: number;
   liquidity: number;
@@ -23,7 +23,7 @@ const cryptoSchema = new Schema({
   color: { type: String, required: true },
   allTimeHighUSD: { type: Number, required: true },
   rate: { type: Number, required: true },
-  market: { type: Number, required: true },
+  markets: { type: Number, required: true },
   volume: { type: Number, required: true },
   cap: { type: Number, required: true },
   liquidity: { type: Number, required: true },
