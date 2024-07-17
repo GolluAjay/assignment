@@ -4,7 +4,7 @@ import { fetchAndStoreCryptoData } from '../services/cryptoService';
 // Schedule tasks to be run on the server
 const startCronJobs = () => {
   // Run the task every 5 seconds
-  cron.schedule('*/20 * * * * *', async () => {
+  cron.schedule('*/10 * * * * *', async () => {
     try {
       console.log('Fetching and storing crypto data...');
       await fetchAndStoreCryptoData();

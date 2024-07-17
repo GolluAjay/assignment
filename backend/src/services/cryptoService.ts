@@ -13,7 +13,7 @@ const makeApiCall = async (code: string) => {
   const url = new URL(
     "/coins/single",
     process.env.LIVECOINWATCH_BASE_URL
-  ).toString();
+  ).toString(); 
   const response = await axios.post(
     url,
     {
@@ -29,21 +29,23 @@ const makeApiCall = async (code: string) => {
       timeout: 10000, // 10 seconds timeout
     }
   );
-  return { ...response.data, code };;
+
+  return { ...response.data, code };
 };
 
 export const fetchAndStoreCryptoData = async () => {
   const codesArray = Object.values(CODES);
-  const apiCalls = codesArray.map((code) => makeApiCall(code));
+  const responsesWithTimestamp = [];
 
-  const responses = await Promise.all(apiCalls);
-
-  const responsesWithTimestamp = responses.map(response => ({
-    ...response,
-    timestamp: new Date(),
-  }));
+  for (const code of codesArray) {
+    const response = await makeApiCall(code);
+    responsesWithTimestamp.push({
+      ...response,
+      timestamp: new Date(),
+    });
+  }
 
   await Crypto.insertMany(responsesWithTimestamp);
 
-  return responses;
+  return responsesWithTimestamp;
 };
