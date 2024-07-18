@@ -1,5 +1,3 @@
-// api/fetchEntries.ts
-import axios from "axios";
 import { Entry } from "@/types";
 
 export const fetchEntries = async (code: string): Promise<Entry[]> => {
