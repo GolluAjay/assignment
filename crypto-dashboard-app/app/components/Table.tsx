@@ -1,7 +1,7 @@
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import moment from "moment";
-import { useDispatch, useSelector, UseSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import Modal from "./Modal";
 import { formatNumber } from "../utils/formatNumber";
